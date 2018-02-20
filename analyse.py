@@ -2,9 +2,11 @@
 
 import glob
 import pandas as pd
+import re
 
 
 rakuten_dir = "data/rakuten"
+jwest_dir = "data/jwest"
 
 
 class ChargeData:
@@ -22,17 +24,19 @@ class ChargeData:
     current_paying_time = 0
     charge_for_this_month = 0.0
     charge_left_for_next_month = 0.0
+    notes = ""
 
     def print(self):
         print(str(self.year) + "/" + str(self.month) + "/" + str(self.day) +
-              " " + str(self.charge) + " 円" + "@ " + str(self.shop))
+              " " + str(self.charge) + " 円 @ " + str(self.shop))
 
 
 # 名寄せ用辞書
 name_id_dict = {
     "関西電力": "関西電力",
     "大阪ガス": "大阪ガス",
-    "ｼﾞ-ﾕ-": "ジーユー"
+    "ｼﾞ-ﾕ-": "ジーユー",
+    "ＥＴＣ": "ETC"
 }
 
 
@@ -44,6 +48,26 @@ def identify_name(input_str):
             return v
 
     return input_str
+
+def sum_by_shop(data_list):
+    # 店ごとに足し合わせる
+
+    data_dict = {}
+
+    for data in data_list:
+        key = identify_name(data.shop)
+        data_dict[key] = data_dict.get(key, 0) + data.charge
+
+    # 高い順にソート
+    for k, v in sorted(data_dict.items(), key=lambda x: -x[1]):
+        print(str(k) + ": " + str(v))
+
+    # 全額足し合わせ
+    sum = 0.
+    for data in data_list:
+        sum += data.charge
+
+    print("合計: " + str(sum))
 
 
 def import_rakuten():
@@ -88,22 +112,47 @@ def import_rakuten():
     return datalist
 
 
+def import_jwest():
+    filenames = glob.glob(jwest_dir + "/*.csv")
+    df = None
+
+    for f in filenames:
+        df_tmp = pd.read_csv(f, encoding="Shift-JIS")
+        if df is None:
+            df = df_tmp
+        else:
+            df = pd.concat([df, df_tmp])
+
+    datalist = []
+
+    for _, row in df.iterrows():
+        date = str(row[u"ご利用日"]).rstrip()
+        if date == "nan":
+            continue  # データじゃない行をスキップ
+
+        data = ChargeData()
+        
+        split = re.split('[年月日]', date)
+        data.year = int(split[0])
+        data.month = int(split[1])
+        data.day = int(split[2])
+
+        data.user = str(row[u"ご利用者"])
+        data.shop = str(row[u"ご利用店名（海外ご利用店名／海外都市名）"])
+        data.charge = float(row[u"ご利用金額（円）"].replace(',', ''))
+        data.notes = str(row[u"現地通貨額・通貨名称・換算レート"])
+
+        datalist.append(data)
+
+    return datalist
+
+
+
 data_rakuten = import_rakuten()
+data_jwest = import_jwest()
 
-dict_rakuten = {}
+print('楽天カード')
+sum_by_shop(data_rakuten)
 
-# 店ごとに足し合わせる
-for data in data_rakuten:
-    key = identify_name(data.shop)
-    dict_rakuten[key] = dict_rakuten.get(key, 0) + data.charge
-
-# 高い順にソート
-for k, v in sorted(dict_rakuten.items(), key=lambda x: -x[1]):
-    print(str(k) + ": " + str(v))
-
-# 全額足し合わせ
-sum = 0.
-for data in data_rakuten:
-    sum += data.charge
-
-print("合計: " + str(sum))
+print('\n\nJ-WESTカード')
+sum_by_shop(data_jwest)
