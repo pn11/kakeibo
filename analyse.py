@@ -7,6 +7,7 @@ import re
 
 rakuten_dir = "data/rakuten"
 jwest_dir = "data/jwest"
+lawson_dir = "data/lawson"
 
 
 class ChargeData:
@@ -36,7 +37,10 @@ name_id_dict = {
     "関西電力": "関西電力",
     "大阪ガス": "大阪ガス",
     "ｼﾞ-ﾕ-": "ジーユー",
-    "ＥＴＣ": "ETC"
+    "ＥＴＣ": "ETC",
+    "ソフトバンク": "ソフトバンク",
+    "ＡＭＡＺＯＮ　ＤＯＷＮＬＯＡＤＳ": "Kindle Unlimited / Amazon Prime",
+    "Ａｍａｚｏｎ　Ｄｏｗｎｌｏａｄｓ": "Kindle Unlimited / Amazon Prime",
 }
 
 
@@ -147,12 +151,50 @@ def import_jwest():
     return datalist
 
 
+def import_lawson():
+    filenames = glob.glob(lawson_dir + "/*.csv")
+    df = None
+
+    for f in filenames:
+        df_tmp = pd.read_csv(f, encoding="Shift-JIS", skiprows=4)
+        if df is None:
+            df = df_tmp
+        else:
+            df = pd.concat([df, df_tmp])
+
+    datalist = []
+
+    for _, row in df.iterrows():
+        date = str(row[u"利用日"]).rstrip()
+        if date == "nan":
+            continue  # データじゃない行をスキップ
+
+        data = ChargeData()
+        
+        split = re.split('[/]', date)
+        data.year = int(split[0])
+        data.month = int(split[1])
+        data.day = int(split[2])
+
+        data.user = str(row[u"本人・家族区分"])
+        data.shop = str(row[u"ご利用店名及び商品名"])
+        data.charge = float(row[u"利用金額"])
+        data.notes = str(row[u"備考"])
+
+        datalist.append(data)
+
+    return datalist
+
 
 data_rakuten = import_rakuten()
 data_jwest = import_jwest()
+data_lawson = import_lawson()
 
 print('楽天カード')
 sum_by_shop(data_rakuten)
 
 print('\n\nJ-WESTカード')
 sum_by_shop(data_jwest)
+
+print('\n\nJMBローソンPontaカード')
+sum_by_shop(data_lawson)

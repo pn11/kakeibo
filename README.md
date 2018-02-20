@@ -2,4 +2,8 @@
 
 クレジットカード明細とかを解析する。要Pandas。
 
-楽天カードだけやってみた。J-WESTカード、Pontaカード(セゾン, VISA)、PiTaPa、Edy とかもやる予定。
+- 楽天カード (Master)
+- J-WESTカード (VISA)
+- JMBローソンPontaセゾンカード (VISA)
+
+を処理できる。PiTaPa、Edy とかもやる予定。
