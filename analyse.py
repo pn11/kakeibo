@@ -3,7 +3,7 @@
 import glob
 import pandas as pd
 import re
-
+import datetime
 
 rakuten_dir = "data/rakuten"
 jwest_dir = "data/jwest"
@@ -14,6 +14,7 @@ class ChargeData:
     year = 0
     month = 0
     day = 0
+    date = datetime.datetime(1970, 1, 1)
     is_new_signature = True
     user = ""
     shop = ""
@@ -30,6 +31,9 @@ class ChargeData:
     def print(self):
         print(str(self.year) + "/" + str(self.month) + "/" + str(self.day) +
               " " + str(self.charge) + " 円 @ " + str(self.shop))
+
+    def create_date(self):
+        self.date = datetime.datetime(self.year, self.month, self.day)
 
 
 # 名寄せ用辞書
@@ -74,6 +78,20 @@ def sum_by_shop(data_list):
     print("合計: " + str(sum))
 
 
+def sum_by_month(data_list, from_date, to_date):
+    # 月ごとに足し合わせる
+
+    sum_dict = {}
+
+    for data in data_list:
+        if (data.date >= from_date and data.date <= to_date):
+            year_month = data.year * 100 + data.month
+            sum_dict[year_month] = sum_dict.get(year_month, 0) + data.charge
+    
+    for k, v in sorted(sum_dict.items()):
+        print(str(k//100) + "/" + str(k%100)+ ": " + str(v))
+
+
 def import_rakuten():
     filenames = glob.glob(rakuten_dir + "/*.csv")
     df = None
@@ -97,6 +115,7 @@ def import_rakuten():
         data.year = int(split[0]) + 2000
         data.month = int(split[1])
         data.day = int(split[2])
+        data.create_date()
         data.charge = float(row[u"利用金額"])
         data.is_new_signature = str(row[u"新規サイン"])
         data.user = str(row[u"利用者"])
@@ -140,7 +159,7 @@ def import_jwest():
         data.year = int(split[0])
         data.month = int(split[1])
         data.day = int(split[2])
-
+        data.create_date()
         data.user = str(row[u"ご利用者"])
         data.shop = str(row[u"ご利用店名（海外ご利用店名／海外都市名）"])
         data.charge = float(row[u"ご利用金額（円）"].replace(',', ''))
@@ -175,7 +194,7 @@ def import_lawson():
         data.year = int(split[0])
         data.month = int(split[1])
         data.day = int(split[2])
-
+        data.create_date()
         data.user = str(row[u"本人・家族区分"])
         data.shop = str(row[u"ご利用店名及び商品名"])
         data.charge = float(row[u"利用金額"])
@@ -198,3 +217,8 @@ sum_by_shop(data_jwest)
 
 print('\n\nJMBローソンPontaカード')
 sum_by_shop(data_lawson)
+
+print('\n\nAll cards total')
+data_all = data_rakuten+data_jwest+data_lawson
+sum_by_month(data_all, datetime.datetime(2000, 4, 1), datetime.datetime(2018, 3, 31))
+
