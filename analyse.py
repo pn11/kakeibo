@@ -4,6 +4,7 @@ import glob
 import pandas as pd
 import re
 import datetime
+import matplotlib.pyplot as plt
 
 rakuten_dir = "data/rakuten"
 jwest_dir = "data/jwest"
@@ -28,9 +29,9 @@ class ChargeData:
     charge_left_for_next_month = 0.0
     notes = ""
 
-    def print(self):
-        print(str(self.year) + "/" + str(self.month) + "/" + str(self.day) +
-              " " + str(self.charge) + " 円 @ " + str(self.shop))
+    def __str__(self):
+        return "{}/{}/{} {}円 @ {}".format(self.year, self.month, self.day, self.charge, self.shop)
+        #str(self.year) + "/" + str(self.month) + "/" + str(self.day) + " " + str(self.charge) + " 円 @ " + str(self.shop)
 
     def create_date(self):
         self.date = datetime.datetime(self.year, self.month, self.day)
@@ -90,6 +91,11 @@ def sum_by_month(data_list, from_date, to_date):
     
     for k, v in sorted(sum_dict.items()):
         print(str(k//100) + "/" + str(k%100)+ ": " + str(v))
+    
+    sum = 0.
+    for k, v in sum_dict.items():
+        sum += v
+    print(str(from_date) + " - " + str(to_date) +" 合計:" + str(sum))
 
 
 def import_rakuten():
@@ -204,6 +210,29 @@ def import_lawson():
 
     return datalist
 
+def plot_gas_and_electricity(data_list):
+    gas_x = []
+    gas_y = []
+    elec_x = []
+    elec_y = []
+
+    for data in data_list:
+        if data.shop.find("大阪ガス") != -1:
+            gas_x.append(data.date)
+            gas_y.append(data.charge)
+            
+        if data.shop.find("関西電力") != -1:
+            elec_x.append(data.date)
+            print(data)
+            elec_y.append(data.charge)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(gas_x, gas_y, label="Gas")
+    ax.plot(elec_x, elec_y, label="Electricity")
+    plt.legend()
+    plt.show()
+
 
 data_rakuten = import_rakuten()
 data_jwest = import_jwest()
@@ -220,5 +249,7 @@ sum_by_shop(data_lawson)
 
 print('\n\nAll cards total')
 data_all = data_rakuten+data_jwest+data_lawson
-sum_by_month(data_all, datetime.datetime(2000, 4, 1), datetime.datetime(2018, 3, 31))
+data_all = sorted(data_all, key=lambda x: x.date)
+sum_by_month(data_all, datetime.datetime(2017, 4, 1), datetime.datetime(2018, 4, 1))
 
+plot_gas_and_electricity(data_all)
