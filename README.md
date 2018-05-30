@@ -7,3 +7,5 @@
 - JMBローソンPontaセゾンカード (VISA)
 
 を処理できる。PiTaPa、Edy とかもやる予定。
+
+- [楽天 Edy データの作成方法](docs/edy.md)
