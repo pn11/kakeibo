@@ -2,6 +2,7 @@
 
 import datetime
 
+
 class ChargeData:
     year = 0
     month = 0
