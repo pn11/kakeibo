@@ -10,7 +10,7 @@
 
 を処理できる。PiTaPa、Edy とかもやる予定。
 
-##　動かし方
+## 動かし方
 
 ```
 python analyse_demo.py
@@ -28,5 +28,4 @@ python analyse_demo.py
 
 ## その他
 
-- [楽天カードフォーマットについて](docs/rakuten_format.md)
 - [楽天 Edy データの作成方法](docs/edy.md)

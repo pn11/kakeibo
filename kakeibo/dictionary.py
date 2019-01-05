@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 
 # 名寄せ用辞書
 name_id_dict = {

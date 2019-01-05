@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 
 import matplotlib.pyplot as plt
 
@@ -13,7 +13,7 @@ def plot_gas_and_electricity(data_list):
         if data.shop.find("大阪ガス") != -1:
             gas_x.append(data.date)
             gas_y.append(data.charge)
-            
+
         if data.shop.find("関西電力") != -1:
             elec_x.append(data.date)
             print(data)
@@ -25,3 +25,5 @@ def plot_gas_and_electricity(data_list):
     ax.plot(elec_x, elec_y, label="Electricity")
     plt.legend()
     plt.show()
+
+
