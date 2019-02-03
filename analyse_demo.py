@@ -11,9 +11,9 @@ from kakeibo.analyse import sum_by_month
 from kakeibo.analyse import sum_by_shop
 
 
-rakuten_dir = "data/rakuten"
-jwest_dir = "data/jwest"
-lawson_dir = "data/lawson"
+rakuten_dir = "kakeibo-data/rakuten"
+jwest_dir = "kakeibo-data/jwest"
+lawson_dir = "kakeibo-data/lawson"
 
 
 data_rakuten = import_data(rakuten_dir, data_type='rakuten')

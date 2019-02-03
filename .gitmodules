@@ -1,0 +1,3 @@
+[submodule "kakeibo-data"]
+	path = kakeibo-data
+	url = git@github.com:pn11/kakeibo-data
