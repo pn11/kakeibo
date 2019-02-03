@@ -27,3 +27,11 @@ class ChargeData:
 
     def create_date(self):
         self.date = datetime.datetime(self.year, self.month, self.day)
+
+    def to_dict(self):
+        dict_ = {"Date": self.date,
+                 "Charge": self.charge,
+                 "Shop": self.shop
+                 }
+
+        return dict_
