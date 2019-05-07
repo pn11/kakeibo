@@ -58,7 +58,7 @@ def create_monthly_report(data_dict_list, year, month):
 
     plt.figure()
     df.plot.pie(y='Charge', figsize=(50, 50))
-    plt.savefig('test.png')
+    plt.savefig('piechart-{}-{}.png'.format(year, month))
     plt.close('all')
 
 

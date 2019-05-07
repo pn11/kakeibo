@@ -25,4 +25,7 @@ data_all = data_rakuten+data_jwest+data_lawson
 data_all = sorted(data_all, key=lambda x: x.date)
 dict_all = [a.to_dict() for a in data_all]
 
+print(create_monthly_report(dict_all, 2018, 8))
+print(create_monthly_report(dict_all, 2018, 9))
+print(create_monthly_report(dict_all, 2018, 10))
 print(create_monthly_report(dict_all, 2018, 11))

@@ -1,5 +1,5 @@
 data
 .vscode
 *.pyc
-
+*.png
 result.txt
