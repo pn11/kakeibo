@@ -68,6 +68,8 @@ def import_rakuten(dir):
             df = pd.concat([df, df_tmp], sort=True)
 
     datalist = []
+    if df is None:
+        return datalist
 
     for _, row in df.iterrows():
         date = str(row[u"利用日"]).rstrip()
@@ -114,6 +116,8 @@ def import_jwest(dir):
             df = pd.concat([df, df_tmp], sort=True)
 
     datalist = []
+    if df is None:
+        return datalist
 
     for _, row in df.iterrows():
         date = str(row[u"ご利用日"]).rstrip()
@@ -149,6 +153,8 @@ def import_lawson(dir):
             df = pd.concat([df, df_tmp], sort=True)
 
     datalist = []
+    if df is None:
+        return datalist
 
     for _, row in df.iterrows():
         date = str(row[u"利用日"]).rstrip()

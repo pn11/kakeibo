@@ -54,10 +54,13 @@ def create_monthly_report(data_dict_list, year, month, notebook=False):
     '''
 
     df = get_month_data(data_dict_list, year, month)
+    if len(df) == 0:
+        return df
 
     df = merge_same_shop(df)
     plt.figure()
-    df.plot(kind='pie', y = 'Charge',
+    df_for_plot = df[df['Charge']>0.0] # 合計がマイナスのものはプロットしない
+    df_for_plot.plot(kind='pie', y = 'Charge',
             counterclock=False, startangle=90,
             shadow=False, labels=df['Shop'], legend = False, fontsize=14,
             autopct='%1.1f%%', figsize=(10, 10))
