@@ -59,7 +59,7 @@ def import_rakuten(dir):
         if df is None:
             df = df_tmp
         else:
-            df = pd.concat([df, df_tmp])
+            df = pd.concat([df, df_tmp], sort=True)
 
     datalist = []
 
@@ -105,7 +105,7 @@ def import_jwest(dir):
         if df is None:
             df = df_tmp
         else:
-            df = pd.concat([df, df_tmp])
+            df = pd.concat([df, df_tmp], sort=True)
 
     datalist = []
 
@@ -140,7 +140,7 @@ def import_lawson(dir):
         if df is None:
             df = df_tmp
         else:
-            df = pd.concat([df, df_tmp])
+            df = pd.concat([df, df_tmp], sort=True)
 
     datalist = []
 

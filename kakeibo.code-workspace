@@ -3,5 +3,32 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"launch": {
+		"configurations": [
+			{
+				"name": "Python: Current File",
+				"type": "python",
+				"request": "launch",
+				"program": "${file}",
+				"console": "integratedTerminal"
+			},
+			{
+				"name": "analyse_demo",
+				"type": "python",
+				"request": "launch",
+				"program": "${workspaceFolder}/analyse_demo.py",
+				"console": "integratedTerminal",
+				"cwd": "${workspaceFolder}"
+			},
+			{
+				"name": "monthly_demo",
+				"type": "python",
+				"request": "launch",
+				"program": "${workspaceFolder}/monthly_demo.py",
+				"console": "integratedTerminal",
+				"cwd": "${workspaceFolder}"
+			},
+		],
+	}
 }
