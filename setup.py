@@ -38,6 +38,7 @@ setup(
         'papermill',
         'pandas',
         'matplotlib',
-        'japanize_matplotlib'
+        'japanize_matplotlib',
+        'mojimoji'
       ],
 )
