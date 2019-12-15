@@ -34,9 +34,10 @@ setup(
     data_files=[(str(Path.home())+'/.notebook-template/', glob.glob('notebook-template/*.ipynb'))],
     python_requires='>=3.5',
     install_requires=[
-          'pandas',
-          'papermill',
-          'matplotlib',
-          'japanize_matplotlib'
+        'jupyter',
+        'papermill',
+        'pandas',
+        'matplotlib',
+        'japanize_matplotlib'
       ],
 )
