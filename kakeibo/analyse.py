@@ -95,7 +95,7 @@ def merge_same_shop(df):
     # Shop が同じものを一つにまとめる。
     merged_dict = {}
 
-    for rec in df.get_values():
+    for rec in df.values:
         shop_name = rec[2]
         charge = rec[0]
         merged_dict[shop_name] = merged_dict.get(shop_name, 0) + charge
