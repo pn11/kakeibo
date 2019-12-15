@@ -3,6 +3,7 @@
 import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
+import japanize_matplotlib
 from kakeibo.dictionary import *
 
 
@@ -95,9 +96,9 @@ def merge_same_shop(df):
     # Shop が同じものを一つにまとめる。
     merged_dict = {}
 
-    for rec in df.values:
-        shop_name = rec[2]
-        charge = rec[0]
+    for rec in df.itertuples():
+        shop_name = rec.Shop
+        charge = rec.Charge
         merged_dict[shop_name] = merged_dict.get(shop_name, 0) + charge
     
     shops = []
