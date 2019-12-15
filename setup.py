@@ -1,3 +1,5 @@
+import glob
+from pathlib import Path
 from setuptools import setup, find_packages
 import sys
 
@@ -25,11 +27,11 @@ setup(
     author_email='pn11@users.noreply.github.com',
     url='https://github.com/pn11/kakeibo',
     license=license,
-    #package_dir={"": "kakeibo"},
     packages=find_packages(
         where=".",
         exclude=('tests', 'docs')
     ),
+    data_files=[(str(Path.home())+'/.notebook-template/', glob.glob('notebook-template/*.ipynb'))],
     python_requires='>=3.5',
     install_requires=[
           'pandas',
