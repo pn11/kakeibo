@@ -48,7 +48,7 @@ def sum_by_month(data_list, from_date, to_date):
     print(str(from_date) + " - " + str(to_date) + " 合計:" + str(sum))
 
 
-def create_monthly_report(data_dict_list, year, month):
+def create_monthly_report(data_dict_list, year, month, notebook=False):
     '''
     月別の内訳を作成する。
     '''
@@ -56,12 +56,20 @@ def create_monthly_report(data_dict_list, year, month):
     df = get_month_data(data_dict_list, year, month)
 
     df = merge_same_shop(df)
-
     plt.figure()
-    df.plot.pie(y='Charge', figsize=(50, 50))
-    plt.savefig('piechart-{}-{}.png'.format(year, month))
-    plt.close('all')
+    df.plot(kind='pie', y = 'Charge',
+            counterclock=False, startangle=90,
+            shadow=False, labels=df['Shop'], legend = False, fontsize=14,
+            autopct='%1.1f%%', figsize=(10, 10))
+    plt.title(f"{year}/{month}", fontsize = 22)
 
+    if notebook:
+        plt.show()
+    if not notebook:
+        plt.savefig('piechart-{}-{}.png'.format(year, month))
+        plt.close('all')
+
+    return df
 
 def get_month_data(data_dict_list, year, month):
     '''
@@ -108,7 +116,7 @@ def merge_same_shop(df):
         shops.append(k)
         charges.append(v)
     
-    df = pd.DataFrame({"Charge": charges}, index=shops)
+    df = pd.DataFrame({"Charge": charges, "Shop": shops}).sort_values('Charge', ascending=False).reset_index(drop=True)
 
     return df
     
