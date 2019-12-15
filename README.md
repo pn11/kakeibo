@@ -10,6 +10,39 @@
 
 を処理できる。PiTaPa、Edy とかもやる予定。
 
+## 前提条件
+
+### ライブラリのインストール
+
+```sh
+pip install pandas matplotlib mojimoji
+```
+
+### データ
+
+`kakeibo-data` にデータを置いておく。以下のような感じ。
+
+```txt
+.
+├── edy
+│   ├── edy_201802.csv
+        中略
+│   ├── edy_201805.csv
+│   └── get_edy_data.py
+├── jwest
+│   ├── 201603.csv
+        中略
+│   └── 201902.csv
+├── lawson
+│   ├── SAISON_1706.csv
+        中略
+│   └── SAISON_1902.csv
+└── rakuten
+    ├── enavi201705(6999).csv
+    ├── enavi201706(6999).csv
+        以下略
+```
+
 ## 動かし方
 
 ```
@@ -24,7 +57,7 @@ python analyse_demo.py
   - せめてどこでエラーが出ているか分かりやすいようにしたい。
 - クレジットカード明細をダウンロードしてくるのがめんどくさい。
   - そのあたりは MoneyForward とかには勝てない。
-  - Splinter でどうにかしようにも画像認証とかある場合は無理。
+  - Seleinum や Splinter でどうにかしようにも画像認証とかある場合は無理。
 
 ## その他
 
