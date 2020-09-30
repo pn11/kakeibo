@@ -55,9 +55,9 @@ def import_rakuten(dir):
             df_tmp = pd.read_csv(f, encoding="Shift-JIS")
         except UnicodeDecodeError:
             import codecs
+            i = 0
             f2 = codecs.open(f, encoding='shift-jis')
             try:
-                i = 0
                 for i, line in enumerate(f2):
                     pass
             except:
