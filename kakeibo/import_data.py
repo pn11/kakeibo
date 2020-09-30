@@ -55,13 +55,12 @@ def import_rakuten(dir):
             df_tmp = pd.read_csv(f, encoding="Shift-JIS")
         except UnicodeDecodeError:
             import codecs
-            i = 0
             f2 = codecs.open(f, encoding='shift-jis')
             try:
                 for i, line in enumerate(f2):
                     pass
             except:
-                logging.error(f'{f}: {i+2}行目に無効な全角文字(例:{invalid_characters})が含まれています。')
+                logging.error(f'{f}に無効な全角文字(例:{invalid_characters})が含まれています。')
             exit(-1)
         if df is None:
             df = df_tmp
