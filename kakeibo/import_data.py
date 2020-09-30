@@ -61,7 +61,7 @@ def import_rakuten(dir):
                     pass
             except:
                 logging.error(f'{f}に無効な全角文字(例:{invalid_characters})が含まれています。')
-            exit(-1)
+            continue
         if df is None:
             df = df_tmp
         else:
