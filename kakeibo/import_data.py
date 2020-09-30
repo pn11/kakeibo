@@ -57,6 +57,7 @@ def import_rakuten(dir):
             import codecs
             f2 = codecs.open(f, encoding='shift-jis')
             try:
+                i = 0
                 for i, line in enumerate(f2):
                     pass
             except:
